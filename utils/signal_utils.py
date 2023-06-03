@@ -1,9 +1,9 @@
-import math
+import numpy as np
 
 def pcm_to_decibel(pcm_value, bit_depth):
     max_amplitude = 2 ** (bit_depth - 1) - 1
     amplitude = pcm_value / max_amplitude
-    decibel = 20 * math.log10(abs(amplitude))
+    decibel = 20 * np.log10(abs(amplitude))
     return decibel
 
 def decibel_to_pcm(decibel, bit_depth):

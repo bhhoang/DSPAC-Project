@@ -31,7 +31,7 @@ channel_1_fft = np.fft.fft(channel_1) # FFT
 abs_channel_1_fft = np.abs(channel_1_fft[:n//2]) # Spectrum
 
 plt.figure("2 Channel Spectrum signal") # Plot spectrum
-plt.subplot(1,1,1)
+plt.subplot(1,2,1)
 plt.plot(np.linspace(0, fs/2, n//2), abs_channel_1_fft) # Plot spectrum
 plt.title("Channel 1 Spectrum")
 plt.xlabel("Frequency (Hz)")
@@ -41,7 +41,7 @@ plt.grid()
 channel_2_fft = np.fft.fft(channel_2) # FFT
 abs_channel_2_fft = np.abs(channel_2_fft[:n//2]) # Spectrum
 
-plt.subplot(1,1,2)
+plt.subplot(1,2,2)
 plt.plot(np.linspace(0, fs/2, n//2), abs_channel_2_fft, color='red') # Plot spectrum
 plt.title("Channel 2 Spectrum")
 plt.xlabel("Frequency (Hz)")
