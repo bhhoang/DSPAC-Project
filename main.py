@@ -3,15 +3,15 @@ import numpy as np
 import scipy.io.wavfile as wav
 import soundfile as sf
 
-file_path = './Example/guitar.wav' # Define file path
+file_path = './Example/guitar.wav'  # Define file path
 
 # Define variable
-threshold = 20 # dB
-ratio = 10 # :1
-gain_reduction = 0 # dB
-gain_increase = 0 # dB
-attack = 0 # ms
-release = 0 # ms
+threshold = 20  # dB
+ratio = 10  # :1
+gain_reduction = 0  # dB
+gain_increase = 0  # dB
+attack = 0  # ms
+release = 0  # ms
 
 # Read file
 samplerate, data = wav.read(file_path)
@@ -48,4 +48,5 @@ plt.xlabel("Frequency (Hz)")
 plt.ylabel("Spectrum magnitude (dB)")
 plt.grid()
 
+plt.tight_layout()
 plt.show()
