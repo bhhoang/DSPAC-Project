@@ -1,35 +1,42 @@
 import matplotlib.pyplot as plt
 import numpy as np
 import scipy as sp
-from scipy.io import wavfile
+import main 
 
+#Plot data in spectrum
 
-def pcm_to_decibel(pcm_value, bit_depth) -> float:
-    if pcm_value == 0:
-        return 0
-    max_amplitude = 2 ** (bit_depth - 1) - 1
-    amplitude = pcm_value / max_amplitude
-    decibel = 20 * np.log10(np.abs(amplitude))
-    return decibel
+plt.figure("2 Channel Spectrum signal") # Plot spectrum
+plt.subplot(1,2,1)
+plt.plot(np.linspace(0, main.fs/2, main.n//2), main.abs_channel_1_fft) # Plot spectrum
+plt.title("Channel 1 Spectrum")
+plt.xlabel("Frequency (Hz)")
+plt.ylabel("Spectrum magnitude (dB)")
+plt.grid()
+
+plt.subplot(1,2,2)
+plt.plot(np.linspace(0, main.fs/2, main.n//2), main.abs_channel_2_fft, color='red') # Plot spectrum
+plt.title("Channel 2 Spectrum")
+plt.xlabel("Frequency (Hz)")
+plt.ylabel("Spectrum magnitude (dB)")
+plt.grid()
 
 # Plot data in time domain
 
 fig1 = plt.figure(figsize=(9, 9))
-sr, data = wavfile.read("Example\\guitar.wav")
-length = len(data)/sr
-time = np.linspace(0, length, len(data))
+length = len(main.data)/main.samplerate
+time = np.linspace(0, length, len(main.data))
 
 fig1.add_subplot(211)
-right_channel = data[:, 0]
+right_channel = main.data[:, 0]
 plt.title("Time domain - Right channel")
-plt.specgram(right_channel, Fs=sr, vmin=-20, vmax=80)
+plt.specgram(right_channel, Fs=main.samplerate, vmin=-20, vmax=80)
 plt.xlim(0, length)
 plt.colorbar()
 
 fig1.add_subplot(212)
-left_channel = data[:, 1]
+left_channel = main.data[:, 1]
 plt.title("Time domain - Left channel")
-plt.specgram(left_channel, Fs=sr, vmin=-20, vmax=80)
+plt.specgram(left_channel, Fs=main.samplerate, vmin=-20, vmax=80)
 plt.xlim(0, length)
 plt.colorbar()
 plt.tight_layout()
@@ -39,15 +46,15 @@ plt.show()
 
 fig2 = plt.figure(figsize=(10, 5))
 ax = fig2.add_subplot(211)
-right_channel = data[:, 0]
+right_channel = main.data[:, 0]
 fourier_data = sp.fft.rfft(right_channel)
 
 db = []
 for pcm_val in fourier_data:
-    db.append(pcm_to_decibel(pcm_val, 16))
+    db.append(main.pcm_to_decibel(pcm_val, 16))
 db = np.array(db)
 
-freq_spectrum = sp.fft.rfftfreq(right_channel.size, 1/sr)
+freq_spectrum = sp.fft.rfftfreq(right_channel.size, 1/main.samplerate)
 
 plt.title("Frequency domain - Right channel")
 plt.xlabel("Frequency (Hz) - Symmetrical log scale")
