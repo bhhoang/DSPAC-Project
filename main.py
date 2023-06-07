@@ -1,52 +1,63 @@
-from matplotlib import pyplot as plt
+import scipy
 import numpy as np
-import scipy.io.wavfile as wav
-import soundfile as sf
+import matplotlib.pyplot as plt
+from matplotlib.colors import LogNorm
+import matplotlib.image as mpimg
+from scipy.fftpack import fft2, fftfreq, fftshift, ifft2
+from scipy import ndimage
 
-file_path = './Example/guitar.wav'  # Define file path
+# RGB to grayscale formula: Y' = 0.2989 R + 0.5870 G + 0.1140 B
+def rgb2gray(rgb):
+    return np.dot(rgb[..., :3], [0.2989, 0.5870, 0.1140])
 
-# Define variable
-threshold = 20  # dB
-ratio = 10  # :1
-gain_reduction = 0  # dB
-gain_increase = 0  # dB
-attack = 0  # ms
-release = 0  # ms
+# Loading image
+img = mpimg.imread('image.png')
+# Convert to grayscale
+img = rgb2gray(img)
+plt.figure("Original image")
+plt.imshow(img, plt.cm.gray)
+plt.axis('off')
+plt.title('Original image')
 
-# Read file
-samplerate, data = wav.read(file_path)
+# Fourier transform
+img_fft = fft2(img)
 
-print ("Sample rate: ", samplerate, "Hz")
-print ("Number of channels: ", len(data[0]))
-print ("Number of samples: ", len(data))
-print ("Duration: ", len(data)/samplerate, "s")
+def spectrum_plot(img_fft):
+    # Plotting spectrum
+    plt.figure("Spectrum")
+    plt.imshow(np.abs(img_fft), norm=LogNorm(vmin=5))
+    plt.colorbar()
+    plt.title('Fourier transform')
+    plt.xlabel('kx')
+    plt.ylabel('ky')
+    plt.show()
 
-n = len(data)
-fs = samplerate
+spectrum_plot(img_fft)
 
-channel_1 = np.array(data[:,0])
-channel_2 = np.array(data[:,1])
+# Filter in FFT
+def filter_fft(img_fft):
+    keep_fraction = 0.1
+    im_fft2 = img_fft.copy()
+    r, c = im_fft2.shape
+    im_fft2[int(r * keep_fraction):int(r * (1 - keep_fraction))] = 0
+    im_fft2[:, int(c * keep_fraction):int(c * (1 - keep_fraction))] = 0
+    plt.figure("Filtered spectrum")
+    plt.imshow(np.abs(im_fft2), norm=LogNorm(vmin=5))
+    plt.colorbar()
+    plt.title('Filtered Fourier transform')
+    plt.xlabel('kx')
+    plt.ylabel('ky')
+    plt.show()
+    return im_fft2
 
-channel_1_fft = np.fft.fft(channel_1) # FFT
-abs_channel_1_fft = np.abs(channel_1_fft[:n//2]) # Spectrum
+img_fft2 = filter_fft(img_fft)
 
-plt.figure("2 Channel Spectrum signal") # Plot spectrum
-plt.subplot(1,2,1)
-plt.plot(np.linspace(0, fs/2, n//2), abs_channel_1_fft) # Plot spectrum
-plt.title("Channel 1 Spectrum")
-plt.xlabel("Frequency (Hz)")
-plt.ylabel("Spectrum magnitude (dB)")
-plt.grid()
-
-channel_2_fft = np.fft.fft(channel_2) # FFT
-abs_channel_2_fft = np.abs(channel_2_fft[:n//2]) # Spectrum
-
-plt.subplot(1,2,2)
-plt.plot(np.linspace(0, fs/2, n//2), abs_channel_2_fft, color='red') # Plot spectrum
-plt.title("Channel 2 Spectrum")
-plt.xlabel("Frequency (Hz)")
-plt.ylabel("Spectrum magnitude (dB)")
-plt.grid()
-
-plt.tight_layout()
+# Reconstructing image from filtered FFT, keeping real part for displaying the image
+img_new = ifft2(img_fft2).real
+plt.figure("Filtered image")
+plt.imshow(img_new, plt.cm.gray)
+plt.axis('off')
+plt.title('Filtered image')
 plt.show()
+
+
