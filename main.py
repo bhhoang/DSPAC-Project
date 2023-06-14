@@ -5,6 +5,7 @@ import numpy as np
 
 from utils.addnoise import periodic_noise
 from utils.rgb2gray import rgb2gray
+from utils.auto_detect_noise import spike_detector
 import Filters.fft_denoiser, Filters.gauss_filter, Filters.metrics, Filters.NLM, Filters.median_filter
 from Filters.NLM import NLMeans
 from Filters.notch_filter import notch_reject_filter
@@ -36,7 +37,7 @@ def multiple_plot(img1, img2, img3, img4, img5) -> None:
 
 
 def plotter(img1, img2, title) -> None:
-    plt.figure(figsize=(20, 20))
+    plt.figure(figsize=(10, 5))
     plt.subplot(1, 2, 1)
     plt.imshow(img1, cmap='gray')
     plt.title('Original')
@@ -59,35 +60,50 @@ def periodic_noise_demo(img: np.ndarray) -> None:
     fs = fftshift(ft)
     fft_mag = 20 * np.log(np.abs(fs))
 
-    # Create notch reject filters
-    H1 = notch_reject_filter(fs.shape, 15, 176, 176)
-    H2 = notch_reject_filter(fs.shape, 15, 0, 350 - 176)
-    H3 = notch_reject_filter(fs.shape, 15, 350 - 176, 0)
-    H4 = notch_reject_filter(fs.shape, 15, -350 + 176, 176)
+    # # Create notch reject filters
+    # H1 = notch_reject_filter(fs.shape, 15, 176, 176)
+    # H2 = notch_reject_filter(fs.shape, 15, 0, 350 - 176)
+    # H3 = notch_reject_filter(fs.shape, 15, 350 - 176, 0)
+    # H4 = notch_reject_filter(fs.shape, 15, -350 + 176, 176)
 
-    # Apply the filters to the image fft
-    H = H1 * H2 * H3 * H4
-    filtered_ft_mag = fft_mag * H
+    # H = H1 * H2 * H3 * H4
+    # filtered_ft_mag = fft_mag * H
+
+    # Using auto spike detection
+    filtered_ft_mag, points = spike_detector(fft_mag)
+    fmag = fft_mag.copy()
+    f_show = fs.copy()
+    dim_x = len(fmag[0])
+    dim_y = len(fmag[1])
+
+    for point in points:
+        x = dim_x // 2 - point[0]
+        y = dim_y // 2 - point[1]
+        H_t = notch_reject_filter(fs.shape, 9, x, y)
+        f_show *= H_t
+        fmag *= H_t
 
     # Show the original image and fft
-    fig = plt.figure(figsize=(20, 20))
+    fig = plt.figure(figsize=(15, 10))
+
     fig.add_subplot(2, 2, 1)
     plt.imshow(img_periodic, cmap='gray')
-    plt.title('Original Image')
+    plt.title('Periodic Noise Image')
 
     fig.add_subplot(2, 2, 2)
     plt.imshow(fft_mag, cmap='gray')
-    plt.title('Original FT')
+    plt.title('Periodic noise FT')
 
     # Show the filtered image and filtered fft
     fig.add_subplot(2, 2, 3)
-    plt.imshow(ifft2(ifftshift(fs * H)).real, cmap='gray')
+    plt.imshow(ifft2(ifftshift(f_show)).real, cmap='gray')
     plt.title('Filtered Image')
 
     fig.add_subplot(2, 2, 4)
-    plt.imshow(filtered_ft_mag, cmap='gray')
+    plt.imshow(fmag, cmap='gray')
     plt.title('Filtered FT')
 
+    plt.tight_layout()
     plt.show()
 
 

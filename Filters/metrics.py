@@ -1,5 +1,6 @@
 import numpy as np
 from skimage.metrics import mean_squared_error, peak_signal_noise_ratio
+import matplotlib.pyplot as plt
 
 
 def MSE(image1, image2):
@@ -13,7 +14,6 @@ def MSE(image1, image2):
 
     # Calculating the Mean Squared Error
     mse = np.mean(np.square(image1.astype(np.float) - image2.astype(np.float)))
-
     return mse
 
 
