@@ -19,7 +19,7 @@ def spectrum_plot(img_fft):
 # Filter in FFT
 def filter_fft(img_fft):
     keep_fraction = 0.2  # The greater this value, the more pixels are preserved (0.1 = 10%) which means less noise is removed
-        im_fft2 = img_fft.copy()
+    im_fft2 = img_fft.copy()
     r, c = im_fft2.shape
     im_fft2[int(r * keep_fraction):int(r * (1 - keep_fraction))] = 0
     im_fft2[:, int(c * keep_fraction):int(c * (1 - keep_fraction))] = 0
