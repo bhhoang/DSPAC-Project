@@ -78,3 +78,19 @@ class noisy_system():
     result = np.uint8(result*255)
 
     return result
+  
+  def periodic_noise(self, image: np.ndarray, freq: float = np.pi/2, amplitude: int = 80) -> np.ndarray:
+    """
+    Add periodic noise to image
+    :param image: image to add noise
+    :param freq: frequency of noise
+    :param amplitude: amplitude of noise
+    :return: image with noise
+    """
+    image = image.copy()
+    for i in range(image.shape[0]):
+        for j in range(image.shape[1]):
+            temp_val = np.clip(np.int16(image[i, j]) + amplitude * (np.sin(freq * i) + np.cos(freq * j)), 0, 255)
+            image[i, j] = np.int8(temp_val)
+
+    return image
