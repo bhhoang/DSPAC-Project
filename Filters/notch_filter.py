@@ -12,7 +12,9 @@ def notch_reject_filter(shape, radius=9, x=0, y=0):
     :return: notch reject filter to be multiplied with the FFT
     """
 
-    P, Q = shape
+    P = shape[0]
+    Q = shape[1]
+
     # Initialize filter with zeros
     mask = np.zeros((P, Q))
 
