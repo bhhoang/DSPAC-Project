@@ -35,36 +35,36 @@ def convolve(image, kernel):
     return output
 
 
-# Example usage:
-# Load the image
-image = cv2.imread('./dataset/JFK.png', cv2.IMREAD_GRAYSCALE)
-
-# Convert the image to float
-image = image.astype(float)
-
-# Normalize the image to the range [0, 1]
-image /= 255.0
-
-# Define the kernel size and sigma
-kernel_size = 7
-sigma = 2.0
-
-# Generate the Gaussian kernel
-kernel = gaussian_kernel(kernel_size, sigma)
-
-# Apply convolution with the Gaussian kernel
-filtered_image = convolve(image, kernel)
-
-# Display the original and filtered images
-plt.subplot(1, 2, 1)
-plt.imshow(image, cmap='gray')
-plt.title('Original Image')
-plt.axis('off')
-
-plt.subplot(1, 2, 2)
-plt.imshow(filtered_image, cmap='gray')
-plt.title('Filtered Image (Gaussian)')
-plt.axis('off')
-
-plt.tight_layout()
-plt.show()
+# # Example usage:
+# # Load the image
+# image = cv2.imread('./dataset/JFK.png', cv2.IMREAD_GRAYSCALE)
+#
+# # Convert the image to float
+# image = image.astype(float)
+#
+# # Normalize the image to the range [0, 1]
+# image /= 255.0
+#
+# # Define the kernel size and sigma
+# kernel_size = 7
+# sigma = 2.0
+#
+# # Generate the Gaussian kernel
+# kernel = gaussian_kernel(kernel_size, sigma)
+#
+# # Apply convolution with the Gaussian kernel
+# filtered_image = convolve(image, kernel)
+#
+# # Display the original and filtered images
+# plt.subplot(1, 2, 1)
+# plt.imshow(image, cmap='gray')
+# plt.title('Original Image')
+# plt.axis('off')
+#
+# plt.subplot(1, 2, 2)
+# plt.imshow(filtered_image, cmap='gray')
+# plt.title('Filtered Image (Gaussian)')
+# plt.axis('off')
+#
+# plt.tight_layout()
+# plt.show()
