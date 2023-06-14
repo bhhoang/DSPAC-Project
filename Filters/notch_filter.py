@@ -1,6 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
+
 def notch_reject_filter(shape, radius=9, x=0, y=0):
     """
     Create a notch reject filter. Use for periodic noise removal.
@@ -19,8 +20,8 @@ def notch_reject_filter(shape, radius=9, x=0, y=0):
     for u in range(0, P):
         for v in range(0, Q):
             # Get distance from point D(u,v) and the antipodal point D(-u,-v) from the center
-            dist = np.sqrt((u - P/2 + x) ** 2 + (v - Q/2 + y) ** 2)
-            antipodal_dist = np.sqrt((u - P/2 - x) ** 2 + (v - Q/2 - y) ** 2)
+            dist = np.sqrt((u - P / 2 + x) ** 2 + (v - Q / 2 + y) ** 2)
+            antipodal_dist = np.sqrt((u - P / 2 - x) ** 2 + (v - Q / 2 - y) ** 2)
 
             if dist <= radius or antipodal_dist <= radius:
                 mask[u, v] = 0.0

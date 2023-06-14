@@ -19,25 +19,26 @@ def median_filter(image, kernel_size):
             neighbors = []
 
             # Loop through the kernel window
-            for m in range(-k, k+1):
-                for n in range(-k, k+1):
+            for m in range(-k, k + 1):
+                for n in range(-k, k + 1):
                     # Check if the neighbor pixel is within the image boundaries
-                    if i+m >= 0 and i+m < height and j+n >= 0 and j+n < width:
+                    if i + m >= 0 and i + m < height and j + n >= 0 and j + n < width:
                         # Append the pixel value to the neighbors list
-                        neighbors.append(image[i+m, j+n])
+                        neighbors.append(image[i + m, j + n])
 
             # Calculate the median value of the neighbors
             median = np.median(neighbors)
 
             # Set the filtered pixel value in the output image
             filtered_image[i, j] = median
-    # Plot the filtered image
-    plt.figure("Filtered image")
-    plt.imshow(filtered_image, plt.cm.gray)
-    plt.title('Median Filtered Image')
-    plt.axis('off')
-    plt.show()
+    # # Plot the filtered image
+    # plt.figure("Filtered image")
+    # plt.imshow(filtered_image, plt.cm.gray)
+    # plt.title('Median Filtered Image')
+    # plt.axis('off')
+    # plt.show()
     return filtered_image
+
 
 # references:https://www.mathworks.com/help/coder/gs/averaging-filter.html https://en.wikipedia.org/wiki/Image_segmentation
 # Average Filter (Spartial Linear Filter)
@@ -71,13 +72,12 @@ def average_filter(image, window_size):
             # Set the filtered pixel value in the output image
             filtered_image[y, x] = avg_channels.astype(np.uint8)
 
-    # Plot the filtered image
-    plt.figure("Filtered image")
-    plt.imshow(filtered_image, plt.cm.gray)
-    plt.title('Average Filtered Image')
-    plt.axis('off')
-    plt.show()
+    # # Plot the filtered image
+    # plt.figure("Filtered image")
+    # plt.imshow(filtered_image, plt.cm.gray)
+    # plt.title('Average Filtered Image')
+    # plt.axis('off')
+    # plt.show()
 
     # Return the filtered image
     return filtered_image
-

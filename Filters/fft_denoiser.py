@@ -6,6 +6,7 @@ import matplotlib.image as mpimg
 from scipy.fftpack import fft2, fftfreq, fftshift, ifft2
 from scipy import ndimage
 
+
 def spectrum_plot(img_fft):
     # Plotting spectrum
     plt.figure("Spectrum")
@@ -15,6 +16,7 @@ def spectrum_plot(img_fft):
     plt.xlabel('kx')
     plt.ylabel('ky')
     plt.show()
+
 
 # Filter in FFT
 def filter_fft(img_fft):
@@ -32,12 +34,9 @@ def filter_fft(img_fft):
     plt.show()
     return im_fft2
 
+
 def denoiser(img):
     # Inverse Fourier transform
     im_fft2 = fft2(img)
     img_new = ifft2(im_fft2).real
-    plt.figure("Denoised image")
-    plt.imshow(img_new, plt.cm.gray)
-    plt.axis('off')
-    plt.title('Denoised image')
-    plt.show()
+    return img_new

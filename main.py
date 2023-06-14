@@ -3,10 +3,13 @@ import utils.addnoise as addnoise
 from utils.rgb2gray import rgb2gray
 import Filters.fft_denoiser, Filters.gauss_filter, Filters.metrics, Filters.NLM, Filters.median_filter
 from Filters.NLM import NLMeans
+
+
 def image_load(path):
     return plt.imread(path)
 
-def multiple_plot(img1, img2, img3, img4, img5)-> None:
+
+def multiple_plot(img1, img2, img3, img4, img5) -> None:
     plt.figure(figsize=(20, 20))
     plt.subplot(1, 5, 1)
     plt.imshow(img1, cmap='gray')
@@ -25,6 +28,7 @@ def multiple_plot(img1, img2, img3, img4, img5)-> None:
     plt.title('FFT')
     plt.show()
 
+
 def plotter(img1, img2, title) -> None:
     plt.figure(figsize=(20, 20))
     plt.subplot(1, 2, 1)
@@ -35,6 +39,7 @@ def plotter(img1, img2, title) -> None:
     plt.title(title)
     plt.show()
 
+
 def main() -> None:
     # Load image
     img = image_load('./dataset/JFK.png')
@@ -44,7 +49,7 @@ def main() -> None:
     # Apply filters
     kernel_size = 10
     window_size = 5
-    sigma = 2 # Sigma is the standard deviation of the Gaussian distribution
+    sigma = 2  # Sigma is the standard deviation of the Gaussian distribution
 
     # Gaussian Filter
     kernel = Filters.gauss_filter.gaussian_kernel(kernel_size, sigma)
@@ -64,9 +69,11 @@ def main() -> None:
     # FFT Filter
     fft_filter_image = Filters.fft_denoiser.denoiser(img.copy())
 
+    plotter(img, fft_filter_image, 'FFT filter')
+
     # Plot all filters
     multiple_plot(img, img_gauss, median_filter_image, gauss_noise, fft_filter_image)
 
+
 if __name__ == '__main__':
     main()
-

@@ -3,10 +3,13 @@ import matplotlib.pyplot as plt
 import cv2
 import scipy.signal as signal
 
+
 def gaussian_kernel(size, sigma):
-    kernel = np.fromfunction(lambda x, y: (1/(2*np.pi*sigma**2)) * np.exp(-((x-(size-1)/2)**2 + (y-(size-1)/2)**2)/(2*sigma**2)), (size, size))
+    kernel = np.fromfunction(lambda x, y: (1 / (2 * np.pi * sigma ** 2)) * np.exp(
+        -((x - (size - 1) / 2) ** 2 + (y - (size - 1) / 2) ** 2) / (2 * sigma ** 2)), (size, size))
     kernel /= np.sum(kernel)
     return kernel
+
 
 def convolve(image, kernel):
     # Get kernel size
@@ -27,9 +30,10 @@ def convolve(image, kernel):
     # Convolution
     for i in range(height):
         for j in range(width):
-            output[i, j] = np.sum(padded_image[i:i+ksize, j:j+ksize] * kernel)
+            output[i, j] = np.sum(padded_image[i:i + ksize, j:j + ksize] * kernel)
 
     return output
+
 
 # Example usage:
 # Load the image
