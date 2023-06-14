@@ -1,5 +1,5 @@
 from matplotlib import pyplot as plt
-import utils.addnoise as addnoise
+from utils.addnoise import periodic_noise
 from utils.rgb2gray import rgb2gray
 import Filters.fft_denoiser, Filters.gauss_filter, Filters.metrics, Filters.NLM, Filters.median_filter
 from Filters.NLM import NLMeans
@@ -11,21 +11,22 @@ def image_load(path):
 
 def multiple_plot(img1, img2, img3, img4, img5) -> None:
     plt.figure(figsize=(20, 20))
-    plt.subplot(1, 5, 1)
+    plt.subplot(2, 3, 1)
     plt.imshow(img1, cmap='gray')
     plt.title('Original')
-    plt.subplot(1, 5, 2)
+    plt.subplot(2, 3, 2)
     plt.imshow(img2, cmap='gray')
     plt.title('Gaussian')
-    plt.subplot(1, 5, 3)
+    plt.subplot(2, 3, 3)
     plt.imshow(img3, cmap='gray')
     plt.title('Median')
-    plt.subplot(1, 5, 4)
+    plt.subplot(2, 3, 4)
     plt.imshow(img4, cmap='gray')
     plt.title('NLM')
-    plt.subplot(1, 5, 5)
+    plt.subplot(2, 3, 5)
     plt.imshow(img5, cmap='gray')
     plt.title('FFT')
+    plt.tight_layout()
     plt.show()
 
 
@@ -37,6 +38,7 @@ def plotter(img1, img2, title) -> None:
     plt.subplot(1, 2, 2)
     plt.imshow(img2, cmap='gray')
     plt.title(title)
+    plt.tight_layout()
     plt.show()
 
 
@@ -58,8 +60,11 @@ def main() -> None:
 
     # Median Filter
     median_filter_image = Filters.median_filter.median_filter(img.copy(), window_size)
+    plotter(img, median_filter_image, 'Median filter')
+
+    # Average Filter
     average_filtered_image = Filters.median_filter.average_filter(img.copy(), window_size)
-    plotter(median_filter_image, average_filtered_image, 'Median filter')
+    plotter(img, average_filtered_image, 'Average filter')
 
     # NLM Filter
     denoiser = NLMeans()
