@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 import scipy
 import numpy as np
 import matplotlib.pyplot as plt
@@ -59,5 +60,12 @@ plt.imshow(img_new, plt.cm.gray)
 plt.axis('off')
 plt.title('Filtered image')
 plt.show()
+=======
+from matplatlib import pyplot as plt
+import utils.addnoise, utils.rgb2gray
+import Filters.fft_denoiser, Filters.gauss_filter, Filters.metrics, Filters.NLM, Filters.median_filter
+>>>>>>> Stashed changes
 
+def image_load(path):
+    return plt.imread(path))
 
