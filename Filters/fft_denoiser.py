@@ -32,8 +32,9 @@ def filter_fft(img_fft):
     plt.show()
     return im_fft2
 
-def denoiser(img, im_fft2):
+def denoiser(img):
     # Inverse Fourier transform
+    im_fft2 = fft2(img)
     img_new = ifft2(im_fft2).real
     plt.figure("Denoised image")
     plt.imshow(img_new, plt.cm.gray)

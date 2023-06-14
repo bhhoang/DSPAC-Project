@@ -2,7 +2,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 import cv2
 import scipy.signal as signal
-from . import dataset
 
 def gaussian_kernel(size, sigma):
     kernel = np.fromfunction(lambda x, y: (1/(2*np.pi*sigma**2)) * np.exp(-((x-(size-1)/2)**2 + (y-(size-1)/2)**2)/(2*sigma**2)), (size, size))
@@ -34,7 +33,7 @@ def convolve(image, kernel):
 
 # Example usage:
 # Load the image
-image = cv2.imread('JFK.png', cv2.IMREAD_GRAYSCALE)
+image = cv2.imread('./dataset/JFK.png', cv2.IMREAD_GRAYSCALE)
 
 # Convert the image to float
 image = image.astype(float)

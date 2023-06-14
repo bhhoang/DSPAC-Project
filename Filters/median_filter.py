@@ -81,14 +81,3 @@ def average_filter(image, window_size):
     # Return the filtered image
     return filtered_image
 
-# Define the kernel size for the median filter
-kernel_size = 3  # Adjust this value according to your needs
-
-# Define the kernel size for the median filter
-window_size = 5  # Adjust this value according to your needs
-
-# Apply the median filter
-median_filtered_image = median_filter(img, kernel_size)
-
-# Apply the median filter
-average_filtered_image = average_filter(img, window_size)
